@@ -1,5 +1,6 @@
 package com.revature.main.model;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class Client {
@@ -7,12 +8,25 @@ public class Client {
   private int id;
   private String firstName;
   private String lastName;
+  private int age;
+  private Collection<Account> accounts; //stackoverflow -- need to test and determine best collection type
 
+  //added more constructors, need to have an if accounts == null argument
   public Client() {};
-  public Client(int id, String firstName, String lastName) {
+
+  public Client(int id, String firstName, String lastName, int age) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.age = age;
+  }
+
+  public Client(int id, String firstName, String lastName, int age, Collection<Account> accounts) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+    this.accounts = accounts;
   }
 
   public int getId() {
@@ -37,6 +51,22 @@ public class Client {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public void setAge(int age) {
+    this.age = age;
+  }
+
+  public Collection<Account> getAccounts() {
+    return accounts;
+  }
+
+  public void setAccounts(Collection<Account> accounts) {
+    this.accounts = accounts;
   }
 
   @Override
