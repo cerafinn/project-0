@@ -21,4 +21,9 @@ public class ClientDao {
       return new Client(generatedId, client.getFirstName(), client.getLastName());
     }
   }
+
+  //get all
+  //get one
+  //update
+  //delete
 }
