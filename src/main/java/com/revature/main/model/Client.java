@@ -1,5 +1,7 @@
 package com.revature.main.model;
 
+import java.util.Objects;
+
 public class Client {
   // create columns for client, along with getters and setters
   private int id;
@@ -35,5 +37,22 @@ public class Client {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if( obj ==null || getClass() != obj.getClass()) return false;
+
+    Client client = (Client) obj;
+    return id == client.id && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName);
+  }
+
+  @Override
+  public int hashCode() { return Objects.hash(id, firstName, lastName); }
+
+  @Override
+  public String toString() {
+    return "Client{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '}';
   }
 }
