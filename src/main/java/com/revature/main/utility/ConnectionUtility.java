@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 public class ConnectionUtility {
   private ConnectionUtility() {
-
   }
+
   public static Connection getConnection() throws SQLException {
     String url = System.getenv("db_url");
     String username = System.getenv("db_username");
