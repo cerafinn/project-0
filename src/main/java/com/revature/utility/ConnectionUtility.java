@@ -1,4 +1,4 @@
-package com.revature.main.utility;
+package com.revature.utility;
 
 import org.postgresql.Driver;
 

@@ -1,4 +1,4 @@
-package com.revature.main.model;
+package com.revature.model;
 
 import java.util.Objects;
 

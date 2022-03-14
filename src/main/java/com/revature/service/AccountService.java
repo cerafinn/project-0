@@ -1,4 +1,4 @@
-package com.revature.main.service;
+package com.revature.service;
 
 public class AccountService {
   //create service layer for account

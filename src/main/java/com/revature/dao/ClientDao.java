@@ -1,8 +1,7 @@
-package com.revature.main.dao;
+package com.revature.dao;
 
-import com.revature.main.model.Account;
-import com.revature.main.model.Client;
-import com.revature.main.utility.ConnectionUtility;
+import com.revature.model.Client;
+import com.revature.utility.ConnectionUtility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class ClientDao {
   }
 
   //get one
-  public Client getClientId(int id) throws SQLException {
+  public Client getClientById(int id) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
       String sql = "SELECT * FROM clients WHERE id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);

@@ -1,4 +1,4 @@
-package com.revature.main.controller;
+package com.revature.controller;
 
 import io.javalin.Javalin;
 

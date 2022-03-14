@@ -1,7 +1,7 @@
-package com.revature.main.dao;
+package com.revature.dao;
 
-import com.revature.main.model.Account;
-import com.revature.main.utility.ConnectionUtility;
+import com.revature.model.Account;
+import com.revature.utility.ConnectionUtility;
 
 import java.sql.*;
 import java.util.ArrayList;
