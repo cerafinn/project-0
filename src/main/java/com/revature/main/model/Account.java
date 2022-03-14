@@ -7,9 +7,15 @@ public class Account {
   private int id;
   private String type;
   private int balance;
-  private int clientId;
+  private int clientId; // should this be a call to getclient by id given endpoint?
 
   public Account() {};
+
+  public Account(int id, String type, int balance) {
+    this.id = id;
+    this.type = type;
+    this.balance = balance;
+  }
   public Account(int id, String type, int balance, int clientId) {
     this.id = id;
     this.type = type;

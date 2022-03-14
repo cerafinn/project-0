@@ -74,7 +74,7 @@ public class ClientDao {
   //update
   public Client updateClient(Client client) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "UPDATE students " + "SET first_name = ?, " + "last_name = ?, " +  "age = ? " +
+      String sql = "UPDATE clients " + "SET first_name = ?, " + "last_name = ?, " +  "age = ? " +
           //account?
           "WHERE id = ?";
 
