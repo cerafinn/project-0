@@ -41,7 +41,7 @@ public class ClientService {
     return newClient;
   }
 
-  public Client editClient(String id, Client c) throws SQLException {
+  public Client editClient(String id, Client c) throws SQLException, ClientNotFoundException {
     try {
       int clientId = Integer.parseInt(id);
 
@@ -58,6 +58,19 @@ public class ClientService {
   }
 
   private void validateClientInfo(Client c) {
+    c.setFirstName(c.getFirstName().trim());
+    c.setLastName(c.getLastName().trim());
 
+    if(!c.getFirstName().matches("[a-zA-Z]+")) {
+      throw new IllegalArgumentException("First name must only have alphabetic characters.");
+    }
+
+    if(!c.getLastName().matches("[a-zA-Z]+")) {
+      throw new IllegalArgumentException("Last name must only have alphabetic characters.");
+    }
+
+    if(c.getAge() < 0) {
+      throw new IllegalArgumentException("Age must be greater than zero");
+    }
   }
 }
