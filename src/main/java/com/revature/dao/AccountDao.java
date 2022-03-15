@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDao {
-  public Account addAccount(Account account) throws SQLException {
+  public Account addAccount(int clientId, Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
       String sql = "INSERT INTO accounts (account_type, balance, client_id) VALUES (?, ?, ?)";
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
       ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
-      ps.setInt(3, account.getClientId());
+      ps.setInt(3, clientId);
 
       ps.executeUpdate();
       ResultSet rs = ps.getGeneratedKeys();
@@ -27,41 +27,39 @@ public class AccountDao {
   }
 
   //get one
-  public Account getAccountById(int cId, int aId) throws SQLException {
+  public Account getAccountById(int clientId, int accountId) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
       String sql = "SELECT * FROM accounts WHERE id = ? AND client_id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
 
-      ps.setInt(1, aId);
-      ps.setInt(2, cId);
+      ps.setInt(1, accountId);
+      ps.setInt(2, clientId);
       ResultSet rs = ps.executeQuery();
 
       if (rs.next()) {
         String accountType = rs.getString("account_type");
         int balance = rs.getInt("balance");
-        int clientId = rs.getInt("clientId");
 
-        return new Account(id, accountType, balance, clientId);
+        return new Account(accountId, accountType, balance, clientId);
       }
     }
     return null;
   }
 
   //get all
-  public List<Account> getAllAccounts(int cId) throws SQLException {
+  public List<Account> getAllAccounts(int clientId) throws SQLException {
     List<Account> accounts = new ArrayList<>();
 
     try (Connection connection = ConnectionUtility.getConnection()) {
       String sql = "SELECT * FROM accounts WHERE client_id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
-      ps.setInt(1, cId);
+      ps.setInt(1, clientId);
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
         int id = rs.getInt("id");
-        String accountType = rs.getString("accountType");
+        String accountType = rs.getString("account_type");
         int balance = rs.getInt("balance");
-        int clientId = rs.getInt("clientId");
 
         accounts.add(new Account(id, accountType, balance, clientId));
       }
@@ -70,22 +68,22 @@ public class AccountDao {
   }
 
   //get by balance constraint
-  public List<Account> filterByBalance(int lowerLimit, int upperLimit) throws SQLException {
+  public List<Account> filterByBalance(int clientId, int lowerLimit, int upperLimit) throws SQLException {
     List<Account> accounts = new ArrayList<>();
 
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "SELECT * FROM accounts WHERE accounts.balance BETWEEN amountLessThan = ? and amountGreaterThan = ?";
+      String sql = "SELECT * FROM accounts WHERE client_id = ? AND accounts.balance BETWEEN ? AND ?";
       PreparedStatement ps = connection.prepareStatement(sql);
 
-      ps.setInt(1, lowerLimit);
-      ps.setInt(2, upperLimit);
+      ps.setInt(1, clientId);
+      ps.setInt(2, lowerLimit);
+      ps.setInt(3, upperLimit);
       ResultSet rs = ps.executeQuery();
 
       if (rs.next()) {
         int id = rs.getInt("id");
         String accountType = rs.getString("account_type");
         int balance = rs.getInt("balance");
-        int clientId = rs.getInt("clientId");
 
         accounts.add(new Account(id, accountType, balance, clientId));
       }
@@ -94,16 +92,16 @@ public class AccountDao {
   }
 
   //update
-  public Account updateAccount(Account account) throws SQLException {
+  public Account updateAccount(int accountId, int clientId, Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "UPDATE accounts " + "SET accountType = ?, " + "balance = ?, " + "WHERE id = ?";
+      String sql = "UPDATE accounts SET account_type = ?, balance = ?, client_id = ? WHERE id = ?";
 
       PreparedStatement ps = connection.prepareStatement(sql);
 
       ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
-      ps.setInt(4, account.getId());
-
+      ps.setInt(3, clientId);
+      ps.setInt(4, accountId);
       ps.executeUpdate();
     }
     return account;

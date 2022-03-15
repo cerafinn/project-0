@@ -26,10 +26,10 @@ public class AccountService {
     return this.accountDao.getAllAccounts(clientId);
   }
 
-  public Account getAccountById(String cId, String aId) throws SQLException, AccountNotFoundException {
+  public Account getAccountById(String clId, String acctId) throws SQLException, AccountNotFoundException {
     try {
-      int clientId = Integer.parseInt(cId);
-      int accountId = Integer.parseInt(aId);
+      int clientId = Integer.parseInt(clId);
+      int accountId = Integer.parseInt(acctId);
       Account a = accountDao.getAccountById(clientId, accountId);
       if (a == null) {
         throw new AccountNotFoundException("Account with id " + accountId + " not found");
@@ -40,11 +40,19 @@ public class AccountService {
     }
   }
 
-  public List<Account> getAccountsByBalance(String lower, String upper) throws SQLException, AccountNotFoundException {
+  public Account addAccount(String clId, Account a) throws SQLException {
+    int clientId = Integer.parseInt(clId);
+    validateAccountInfo(a);
+    Account newAccount = accountDao.addAccount(clientId, a);
+    return newAccount;
+  }
+
+  public List<Account> getAccountsByBalance(String clId, String upper, String lower) throws SQLException, AccountNotFoundException {
     try {
+      int clientId = Integer.parseInt(clId);
       int lowerLimit = Integer.parseInt(lower);
       int upperLimit = Integer.parseInt(upper);
-      List<Account> accounts = accountDao.filterByBalance(lowerLimit, upperLimit);
+      List<Account> accounts = accountDao.filterByBalance(clientId, lowerLimit, upperLimit);
       if (accounts == null) {
         throw new AccountNotFoundException("Account with balances between " + lowerLimit + " and " + upperLimit + " not found");
       }
@@ -54,38 +62,30 @@ public class AccountService {
     }
   }
 
-  public Account addAccount(Account a) throws SQLException {
-    validateAccountInfo(a);
-    Account newAccount = accountDao.addAccount(a);
-    return newAccount;
-  }
-
-  public Account editAccount(String aId, String cId, Account a) throws SQLException, AccountNotFoundException {
+  public Account editAccount(String acctId, String clId, Account a) throws SQLException, AccountNotFoundException {
     try {
-      int accountId = Integer.parseInt(aId);
-      int clientId = Integer.parseInt(cId);
+      int accountId = Integer.parseInt(acctId);
+      int clientId = Integer.parseInt(clId);
 
       if(accountDao.getAccountById(clientId, accountId) == null) {
         throw new AccountNotFoundException("Account with " + accountId + " does not exist for client with id " + clientId);
       }
       validateAccountInfo(a);
       a.setId(accountId);
-      Account updatedAccount = accountDao.updateAccount(a);
+      Account updatedAccount = accountDao.updateAccount(accountId, clientId, a);
       return updatedAccount;
     } catch(NumberFormatException e) {
       throw new IllegalArgumentException("id provided must be a valid int");
     }
   }
 
-  public boolean deleteAccount(String aId, String cId) throws SQLException, AccountNotFoundException, ClientNotFoundException {
+  public boolean deleteAccount(String acctId, String clId) throws SQLException, AccountNotFoundException {
     try {
-      int accountId = Integer.parseInt(aId);
-      int clientId = Integer.parseInt(cId);
+      int accountId = Integer.parseInt(acctId);
+      int clientId = Integer.parseInt(clId);
 
       if(accountDao.getAccountById(clientId, accountId) == null) {
         throw new AccountNotFoundException("Account with " + accountId + " does not exist.");
-      } else if (clientDao.getClientById(clientId) == null) {
-        throw new ClientNotFoundException("Client with " + clientId + " does not exist");
       }
       boolean result = accountDao.deleteAccount(accountId);
       return result;

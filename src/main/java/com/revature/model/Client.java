@@ -75,7 +75,7 @@ public class Client {
     if( obj ==null || getClass() != obj.getClass()) return false;
 
     Client client = (Client) obj;
-    return id == client.id && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName);
+    return id == client.id && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) ;
   }
 
   @Override

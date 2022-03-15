@@ -11,6 +11,11 @@ public class Account {
 
   public Account() {};
 
+  public Account(String accountType, int balance) {
+    this.accountType = accountType;
+    this.balance = balance;
+  }
+
   public Account(int id, String accountType, int balance) {
     this.id = id;
     this.accountType = accountType;

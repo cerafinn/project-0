@@ -1,4 +1,4 @@
-package com.revature.service;
+package com.revature.utility;
 
 import com.revature.utility.ConnectionUtility;
 import org.junit.jupiter.api.Test;

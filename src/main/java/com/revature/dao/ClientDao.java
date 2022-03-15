@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import com.revature.model.Account;
 import com.revature.model.Client;
 import com.revature.utility.ConnectionUtility;
 
@@ -40,7 +41,6 @@ public class ClientDao {
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         int age = rs.getInt("age");
-
 
         return new Client(id, firstName, lastName, age);
       }
