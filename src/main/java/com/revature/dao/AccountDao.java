@@ -32,7 +32,7 @@ public class AccountDao {
   }
 
   //get one
-  public Account getAccountId(int id) throws SQLException {
+  public Account getAccountById(int id) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
       String sql = "SELECT * FROM accounts WHERE id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
@@ -43,7 +43,7 @@ public class AccountDao {
       if (rs.next()) {
         String type = rs.getString("type");
         int balance = rs.getInt("balance");
-        int clientId = rs.getInt("clientId")
+        int clientId = rs.getInt("clientId");
 
         return new Account(id, type, balance, clientId);
       }

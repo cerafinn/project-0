@@ -1,6 +1,5 @@
 package com.revature.service;
 
-
 import com.revature.dao.ClientDao;
 import com.revature.exception.ClientNotFoundException;
 import com.revature.model.Client;
