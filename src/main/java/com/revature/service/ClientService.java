@@ -34,4 +34,30 @@ public class ClientService {
       throw new IllegalArgumentException("id provided must be a valid int");
     }
   }
+
+  public Client addClient(Client c) throws SQLException {
+    validateClientInfo(c);
+    Client newClient = clientDao.addClient(c);
+    return newClient;
+  }
+
+  public Client editClient(String id, Client c) throws SQLException {
+    try {
+      int clientId = Integer.parseInt(id);
+
+      if(clientDao.getClientById(clientId) == null) {
+        throw new ClientNotFoundException("Client with " + clientId + " does not exist.");
+      }
+      validateClientInfo(c);
+      c.setId(clientId);
+      Client updatedClient = clientDao.updateClient(c);
+      return updatedClient;
+    } catch(NumberFormatException e) {
+      throw new IllegalArgumentException("id provided must be a valid int");
+    }
+  }
+
+  private void validateClientInfo(Client c) {
+
+  }
 }
