@@ -5,20 +5,20 @@ import java.util.Objects;
 public class Account {
   //create columns for account, along with getters and setters
   private int id;
-  private String type;
+  private String accountType;
   private int balance;
   private int clientId; // should this be a call to getclient by id given endpoint?
 
   public Account() {};
 
-  public Account(int id, String type, int balance) {
+  public Account(int id, String accountType, int balance) {
     this.id = id;
-    this.type = type;
+    this.accountType = accountType;
     this.balance = balance;
   }
-  public Account(int id, String type, int balance, int clientId) {
+  public Account(int id, String accountType, int balance, int clientId) {
     this.id = id;
-    this.type = type;
+    this.accountType = accountType;
     this.balance = balance;
     this.clientId = clientId;
   }
@@ -31,12 +31,12 @@ public class Account {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
+  public String getAccountType() {
+    return accountType;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setAccountType(String accountType) {
+    this.accountType = accountType;
   }
 
   public int getBalance() {
@@ -61,14 +61,14 @@ public class Account {
     if( obj ==null || getClass() != obj.getClass()) return false;
 
     Account account = (Account) obj;
-    return id == account.id && balance == account.balance && clientId == account.clientId && Objects.equals(type, account.type);
+    return id == account.id && balance == account.balance && clientId == account.clientId && Objects.equals(accountType, account.accountType);
   }
 
   @Override
-  public int hashCode() { return Objects.hash(id, type, balance, clientId); }
+  public int hashCode() { return Objects.hash(id, accountType, balance, clientId); }
 
   @Override
   public String toString() {
-    return "Account{" + "id=" + id + ", type='" + type + '\'' + ", balance='" + balance + '\'' + ", clientId='" + clientId + '}';
+    return "Account{" + "id=" + id + ", accountType='" + accountType + '\'' + ", balance='" + balance + '\'' + ", clientId='" + clientId + '}';
   }
 }

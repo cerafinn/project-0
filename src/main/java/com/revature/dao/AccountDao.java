@@ -8,18 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDao {
-  //add
-  //get all
-  //get one
-  //update
-  //delete
-
   public Account addAccount(Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "INSERT INTO accounts (type, balance) VALUES (?, ?)";
+      String sql = "INSERT INTO accounts (account_type, balance) VALUES (?, ?)";
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-      ps.setString(1, account.getType());
+      ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
       //how to set client id automatically?
       ps.executeUpdate();
@@ -27,7 +21,7 @@ public class AccountDao {
       rs.next();
       int generatedId = rs.getInt(1);
 
-      return new Account(generatedId, account.getType(), account.getBalance(), account.getClientId());
+      return new Account(generatedId, account.getAccountType(), account.getBalance(), account.getClientId());
     }
   }
 
@@ -41,11 +35,11 @@ public class AccountDao {
       ResultSet rs = ps.executeQuery();
 
       if (rs.next()) {
-        String type = rs.getString("type");
+        String accountType = rs.getString("account_type");
         int balance = rs.getInt("balance");
         int clientId = rs.getInt("clientId");
 
-        return new Account(id, type, balance, clientId);
+        return new Account(id, accountType, balance, clientId);
       }
     }
     return null;
@@ -62,11 +56,11 @@ public class AccountDao {
 
       while (rs.next()) {
         int id = rs.getInt("id");
-        String type = rs.getString("type");
+        String accountType = rs.getString("accountType");
         int balance = rs.getInt("balance");
         int clientId = rs.getInt("clientId");
 
-        accounts.add(new Account(id, type, balance, clientId));
+        accounts.add(new Account(id, accountType, balance, clientId));
       }
     }
     return accounts;
@@ -75,11 +69,11 @@ public class AccountDao {
   //update
   public Account updateAccount(Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "UPDATE accounts " + "SET type = ?, " + "balance = ?, " + "WHERE id = ?";
+      String sql = "UPDATE accounts " + "SET accountType = ?, " + "balance = ?, " + "WHERE id = ?";
 
       PreparedStatement ps = connection.prepareStatement(sql);
 
-      ps.setString(1, account.getType());
+      ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
       ps.setInt(4, account.getId());
 

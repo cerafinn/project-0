@@ -39,9 +39,9 @@ public class AccountController implements Controller {
   };
 
   private Handler deleteAccount = (ctx) -> {
-    Account account = accountService.deleteAccount(ctx.pathParam("accountId"));
+    boolean result = accountService.deleteAccount(ctx.pathParam("accountId"));
     ctx.status(200);
-    ctx.json(account);
+    ctx.json(result);
   };
 
   @Override
