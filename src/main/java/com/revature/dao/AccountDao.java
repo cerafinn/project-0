@@ -10,12 +10,13 @@ import java.util.List;
 public class AccountDao {
   public Account addAccount(Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "INSERT INTO accounts (account_type, balance) VALUES (?, ?)";
+      String sql = "INSERT INTO accounts (account_type, balance, client_id) VALUES (?, ?, ?)";
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
       ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
-      //how to set client id automatically?
+      ps.setInt(3, account.getClientId());
+
       ps.executeUpdate();
       ResultSet rs = ps.getGeneratedKeys();
       rs.next();
@@ -57,6 +58,30 @@ public class AccountDao {
       while (rs.next()) {
         int id = rs.getInt("id");
         String accountType = rs.getString("accountType");
+        int balance = rs.getInt("balance");
+        int clientId = rs.getInt("clientId");
+
+        accounts.add(new Account(id, accountType, balance, clientId));
+      }
+    }
+    return accounts;
+  }
+
+  //get by balance constraint
+  public List<Account> filterByBalance(int lowerLimit, int upperLimit) throws SQLException {
+    List<Account> accounts = new ArrayList<>();
+
+    try (Connection connection = ConnectionUtility.getConnection()) {
+      String sql = "SELECT * FROM accounts WHERE accounts.balance BETWEEN amountLessThan = ? and amountGreaterThan = ?";
+      PreparedStatement ps = connection.prepareStatement(sql);
+
+      ps.setInt(1, lowerLimit);
+      ps.setInt(2, upperLimit);
+      ResultSet rs = ps.executeQuery();
+
+      if (rs.next()) {
+        int id = rs.getInt("id");
+        String accountType = rs.getString("account_type");
         int balance = rs.getInt("balance");
         int clientId = rs.getInt("clientId");
 

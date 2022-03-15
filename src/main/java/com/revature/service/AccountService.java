@@ -34,6 +34,10 @@ public class AccountService {
     }
   }
 
+  public Account getAccountByBalance(String ) throws SQLException, AccountNotFoundException {
+
+  }
+
   public Account addAccount(Account a) throws SQLException {
     validateAccountInfo(a);
     Account newAccount = accountDao.addAccount(a);

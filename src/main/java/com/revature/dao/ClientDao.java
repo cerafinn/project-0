@@ -30,7 +30,7 @@ public class ClientDao {
   //get one
   public Client getClientById(int id) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "SELECT clients.* FROM clients LEFT JOIN accounts ON clients.id = accounts.client_id WHERE id = ?";
+      String sql = "SELECT clients.* FROM clients WHERE id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
 
       ps.setInt(1, id);
@@ -40,7 +40,7 @@ public class ClientDao {
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         int age = rs.getInt("age");
-        // how to pull accounts, need to create get all for id client
+
 
         return new Client(id, firstName, lastName, age);
       }
