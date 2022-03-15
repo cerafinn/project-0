@@ -8,7 +8,7 @@ import io.javalin.http.Handler;
 import java.util.List;
 
 public class AccountController implements Controller {
-  //create routes for accounts from queries
+  //create routes for accounts from queries -- need to fetch client id for endpoints
   public AccountService accountService;
 
   public AccountController() { this.accountService = new AccountService(); }
@@ -22,6 +22,13 @@ public class AccountController implements Controller {
     String id = ctx.pathParam("accountId");
     Account account = accountService.getAccountById(id);
     ctx.json(account);
+  };
+
+  private Handler filterByBalance = (ctx) -> {
+    String lower = ctx.pathParam("lowerLimit");
+    String upper = ctx.pathParam("upperLimit");
+    List<Account> accounts = accountService.getAccountsByBalance(lower, upper);
+    ctx.json(accounts);
   };
 
   private Handler addAccount = (ctx) -> {
@@ -48,6 +55,7 @@ public class AccountController implements Controller {
   public void mapEndpoints(Javalin app) {
     app.get("/clients/{clientId}/accounts", getAllAccounts);
     app.get("/clients/{clientId}/accounts/{accountId}", getAccountById);
+    app.get("/clients/{clientId}/accounts?amountLessThan={lowerLimit}&amountGreaterThan={upperLimit}", filterByBalance);
     app.post("/clients/{clientId}/accounts", addAccount);
     app.put("/clients/{clientId}/accounts/{accountId}", editAccount);
     app.delete("/clients/{clientId}/accounts/{accountId}", deleteAccount);

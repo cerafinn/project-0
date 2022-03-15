@@ -34,8 +34,18 @@ public class AccountService {
     }
   }
 
-  public Account getAccountByBalance(String ) throws SQLException, AccountNotFoundException {
-
+  public List<Account> getAccountsByBalance(String lower, String upper) throws SQLException, AccountNotFoundException {
+    try {
+      int lowerLimit = Integer.parseInt(lower);
+      int upperLimit = Integer.parseInt(upper);
+      List<Account> accounts = accountDao.filterByBalance(lowerLimit, upperLimit);
+      if (accounts == null) {
+        throw new AccountNotFoundException("Account with balances between " + lowerLimit + " and " + upperLimit + " not found");
+      }
+      return accounts;
+    } catch(NumberFormatException e) {
+      throw new IllegalArgumentException("Limits provided must be valid ints");
+    }
   }
 
   public Account addAccount(Account a) throws SQLException {
