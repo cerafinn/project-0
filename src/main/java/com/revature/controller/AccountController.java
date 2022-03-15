@@ -18,8 +18,38 @@ public class AccountController implements Controller {
     ctx.json(accounts);
   };
 
+  private Handler getAccountById = (ctx) -> {
+    String id = ctx.pathParam("accountId");
+    Account account = accountService.getAccountById(id);
+    ctx.json(account);
+  };
+
+  private Handler addAccount = (ctx) -> {
+    Account newAccount = ctx.bodyAsClass(Account.class);
+    Account account = accountService.addAccount(newAccount);
+    ctx.status(201);
+    ctx.json(account);
+  };
+
+  private Handler editAccount = (ctx) -> {
+    Account accountToEdit = ctx.bodyAsClass(Account.class);
+    Account account = accountService.editAccount(ctx.pathParam("accountId"), accountToEdit);
+    ctx.status(200);
+    ctx.json(account);
+  };
+
+  private Handler deleteAccount = (ctx) -> {
+    Account account = accountService.deleteAccount(ctx.pathParam("accountId"));
+    ctx.status(200);
+    ctx.json(account);
+  };
+
   @Override
   public void mapEndpoints(Javalin app) {
     app.get("/clients/{clientId}/accounts", getAllAccounts);
+    app.get("/clients/{clientId}/accounts/{accountId}", getAccountById);
+    app.post("/clients/{clientId}/accounts", addAccount);
+    app.put("/clients/{clientId}/accounts/{accountId}", editAccount);
+    app.delete("/clients/{clientId}/accounts/{accountId}", deleteAccount);
   }
 }

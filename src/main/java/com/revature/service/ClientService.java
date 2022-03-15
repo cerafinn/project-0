@@ -56,6 +56,20 @@ public class ClientService {
     }
   }
 
+  public Client deleteClient(String id) throws SQLException, ClientNotFoundException {
+    try {
+      int clientId = Integer.parseInt(id);
+
+      if(clientDao.getClientById(clientId) == null) {
+        throw new ClientNotFoundException("Client with " + clientId + " does not exist.");
+      }
+      Client c = clientDao.getClientById(clientId);
+      return c;
+    } catch(NumberFormatException e) {
+      throw new IllegalArgumentException("id provided must be a valid int");
+    }
+  }
+
   private void validateClientInfo(Client c) {
     c.setFirstName(c.getFirstName().trim());
     c.setLastName(c.getLastName().trim());

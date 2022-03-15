@@ -2,6 +2,8 @@ package com.revature.service;
 
 import com.revature.dao.AccountDao;
 import com.revature.exception.AccountNotFoundException;
+import com.revature.exception.AccountNotFoundException;
+import com.revature.model.Account;
 import com.revature.model.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,20 @@ public class AccountService {
       a.setId(accountId);
       Account updatedAccount = accountDao.updateAccount(a);
       return updatedAccount;
+    } catch(NumberFormatException e) {
+      throw new IllegalArgumentException("id provided must be a valid int");
+    }
+  }
+
+  public Account deleteAccount(String id) throws SQLException, AccountNotFoundException {
+    try {
+      int accountId = Integer.parseInt(id);
+
+      if(accountDao.getAccountById(accountId) == null) {
+        throw new AccountNotFoundException("Account with " + accountId + " does not exist.");
+      }
+      Account a = accountDao.getAccountById(accountId);
+      return a;
     } catch(NumberFormatException e) {
       throw new IllegalArgumentException("id provided must be a valid int");
     }

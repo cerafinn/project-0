@@ -18,8 +18,39 @@ public class ClientController implements Controller {
     ctx.json(clients);
   };
 
+  private Handler getClientById = (ctx) -> {
+    String id = ctx.pathParam("clientId");
+    Client client = clientService.getClientById(id);
+    ctx.json(client);
+  };
+
+  private Handler addClient = (ctx) -> {
+    Client newClient = ctx.bodyAsClass(Client.class);
+    Client client = clientService.addClient(newClient);
+    ctx.status(201);
+    ctx.json(client);
+  };
+
+  private Handler updateClient = (ctx) -> {
+    Client updatedClient = ctx.bodyAsClass(Client.class);
+    Client client = clientService.editClient(ctx.pathParam("clientId"), updatedClient);
+    ctx.status(200);
+    ctx.json(client);
+  };
+
+  private Handler deleteClient = (ctx) -> {
+    Client client = clientService.deleteClient(ctx.pathParam("clientId"));
+    ctx.status(200);
+    ctx.json(client);
+    // may need to test/refactor delete
+  };
+
   @Override
   public void mapEndpoints(Javalin app) {
     app.get("/clients", getAllClients);
+    app.get("/clients/{clientId}", getClientById);
+    app.post("/clients", addClient);
+    app.put("/clients/{clientId}", updateClient);
+    app.delete("/clients/{clientId}", deleteClient);
   }
 }
