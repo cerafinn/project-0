@@ -14,13 +14,15 @@ public class AccountController implements Controller {
   public AccountController() { this.accountService = new AccountService(); }
 
   private Handler getAllAccounts = (ctx) -> {
-    List<Account> accounts = accountService.getAllAccounts();
+    String clientId = ctx.pathParam("clientId");
+    List<Account> accounts = accountService.getAllAccounts(clientId);
     ctx.json(accounts);
   };
 
   private Handler getAccountById = (ctx) -> {
-    String id = ctx.pathParam("accountId");
-    Account account = accountService.getAccountById(id);
+    String clientId = ctx.pathParam("clientId");
+    String accountId = ctx.pathParam("accountId");
+    Account account = accountService.getAccountById(clientId, accountId);
     ctx.json(account);
   };
 
@@ -40,13 +42,13 @@ public class AccountController implements Controller {
 
   private Handler editAccount = (ctx) -> {
     Account accountToEdit = ctx.bodyAsClass(Account.class);
-    Account account = accountService.editAccount(ctx.pathParam("accountId"), accountToEdit);
+    Account account = accountService.editAccount(ctx.pathParam("accountId"), ctx.pathParam("clientId"), accountToEdit);
     ctx.status(200);
     ctx.json(account);
   };
 
   private Handler deleteAccount = (ctx) -> {
-    boolean result = accountService.deleteAccount(ctx.pathParam("accountId"));
+    boolean result = accountService.deleteAccount(ctx.pathParam("accountId"), ctx.pathParam("clientId"));
     ctx.status(200);
     ctx.json(result);
   };

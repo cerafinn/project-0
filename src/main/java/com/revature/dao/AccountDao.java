@@ -27,12 +27,13 @@ public class AccountDao {
   }
 
   //get one
-  public Account getAccountById(int id) throws SQLException {
+  public Account getAccountById(int cId, int aId) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "SELECT * FROM accounts WHERE id = ?";
+      String sql = "SELECT * FROM accounts WHERE id = ? AND client_id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
 
-      ps.setInt(1, id);
+      ps.setInt(1, aId);
+      ps.setInt(2, cId);
       ResultSet rs = ps.executeQuery();
 
       if (rs.next()) {
@@ -47,12 +48,13 @@ public class AccountDao {
   }
 
   //get all
-  public List<Account> getAllAccounts() throws SQLException {
+  public List<Account> getAllAccounts(int cId) throws SQLException {
     List<Account> accounts = new ArrayList<>();
 
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "SELECT * FROM accounts";
+      String sql = "SELECT * FROM accounts WHERE client_id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
+      ps.setInt(1, cId);
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {

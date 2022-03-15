@@ -1,7 +1,9 @@
 package com.revature.service;
 
 import com.revature.dao.AccountDao;
+import com.revature.dao.ClientDao;
 import com.revature.exception.AccountNotFoundException;
+import com.revature.exception.ClientNotFoundException;
 import com.revature.model.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +19,18 @@ public class AccountService {
   public AccountService() { this.accountDao = new AccountDao(); }
   public AccountService(AccountDao mockDao) { this.accountDao = mockDao; }
 
-  public List<Account> getAllAccounts() throws SQLException {
-    return this.accountDao.getAllAccounts();
+  private ClientDao clientDao;
+
+  public List<Account> getAllAccounts(String id) throws SQLException {
+    int clientId = Integer.parseInt(id);
+    return this.accountDao.getAllAccounts(clientId);
   }
 
-  public Account getAccountById(String id) throws SQLException, AccountNotFoundException {
+  public Account getAccountById(String cId, String aId) throws SQLException, AccountNotFoundException {
     try {
-      int accountId = Integer.parseInt(id);
-      Account a = accountDao.getAccountById(accountId);
+      int clientId = Integer.parseInt(cId);
+      int accountId = Integer.parseInt(aId);
+      Account a = accountDao.getAccountById(clientId, accountId);
       if (a == null) {
         throw new AccountNotFoundException("Account with id " + accountId + " not found");
       }
@@ -54,12 +60,13 @@ public class AccountService {
     return newAccount;
   }
 
-  public Account editAccount(String id, Account a) throws SQLException, AccountNotFoundException {
+  public Account editAccount(String aId, String cId, Account a) throws SQLException, AccountNotFoundException {
     try {
-      int accountId = Integer.parseInt(id);
+      int accountId = Integer.parseInt(aId);
+      int clientId = Integer.parseInt(cId);
 
-      if(accountDao.getAccountById(accountId) == null) {
-        throw new AccountNotFoundException("Account with " + accountId + " does not exist.");
+      if(accountDao.getAccountById(clientId, accountId) == null) {
+        throw new AccountNotFoundException("Account with " + accountId + " does not exist for client with id " + clientId);
       }
       validateAccountInfo(a);
       a.setId(accountId);
@@ -70,12 +77,15 @@ public class AccountService {
     }
   }
 
-  public boolean deleteAccount(String id) throws SQLException, AccountNotFoundException {
+  public boolean deleteAccount(String aId, String cId) throws SQLException, AccountNotFoundException, ClientNotFoundException {
     try {
-      int accountId = Integer.parseInt(id);
+      int accountId = Integer.parseInt(aId);
+      int clientId = Integer.parseInt(cId);
 
-      if(accountDao.getAccountById(accountId) == null) {
+      if(accountDao.getAccountById(clientId, accountId) == null) {
         throw new AccountNotFoundException("Account with " + accountId + " does not exist.");
+      } else if (clientDao.getClientById(clientId) == null) {
+        throw new ClientNotFoundException("Client with " + clientId + " does not exist");
       }
       boolean result = accountDao.deleteAccount(accountId);
       return result;
