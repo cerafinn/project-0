@@ -15,7 +15,7 @@ public class AccountService {
 
   private AccountDao accountDao;
   public AccountService() { this.accountDao = new AccountDao(); }
-  public AccountService(AccountService mockDao) { this.accountDao = mockDao; }
+  public AccountService(AccountDao mockDao) { this.accountDao = mockDao; }
 
   public List<Account> getAllAccounts() throws SQLException {
     return this.accountDao.getAllAccounts();
