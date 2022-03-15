@@ -43,9 +43,9 @@ public class AccountDao {
       if (rs.next()) {
         String type = rs.getString("type");
         int balance = rs.getInt("balance");
-        // get client id/id information
+        int clientId = rs.getInt("clientId")
 
-        return new Account(id, type, balance);
+        return new Account(id, type, balance, clientId);
       }
     }
     return null;
@@ -64,9 +64,9 @@ public class AccountDao {
         int id = rs.getInt("id");
         String type = rs.getString("type");
         int balance = rs.getInt("balance");
-        //need return for client information?
+        int clientId = rs.getInt("clientId");
 
-        accounts.add(new Account(id, type, balance));
+        accounts.add(new Account(id, type, balance, clientId));
       }
     }
     return accounts;

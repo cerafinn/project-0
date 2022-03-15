@@ -30,7 +30,7 @@ public class ClientDao {
   //get one
   public Client getClientById(int id) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "SELECT * FROM clients WHERE id = ?";
+      String sql = "SELECT clients.* FROM clients LEFT JOIN accounts ON clients.id = accounts.client_id WHERE id = ?";
       PreparedStatement ps = connection.prepareStatement(sql);
 
       ps.setInt(1, id);
