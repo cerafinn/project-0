@@ -21,6 +21,7 @@ public class Account {
     this.accountType = accountType;
     this.balance = balance;
   }
+
   public Account(int id, String accountType, int balance, int clientId) {
     this.id = id;
     this.accountType = accountType;

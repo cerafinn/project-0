@@ -92,16 +92,15 @@ public class AccountDao {
   }
 
   //update
-  public Account updateAccount(int accountId, int clientId, Account account) throws SQLException {
+  public Account updateAccount(int accountId, Account account) throws SQLException {
     try (Connection connection = ConnectionUtility.getConnection()) {
-      String sql = "UPDATE accounts SET account_type = ?, balance = ?, client_id = ? WHERE id = ?";
+      String sql = "UPDATE accounts SET account_type = ?, balance = ? WHERE id = ?";
 
       PreparedStatement ps = connection.prepareStatement(sql);
 
       ps.setString(1, account.getAccountType());
       ps.setInt(2, account.getBalance());
-      ps.setInt(3, clientId);
-      ps.setInt(4, accountId);
+      ps.setInt(3, accountId);
       ps.executeUpdate();
     }
     return account;

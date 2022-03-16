@@ -19,8 +19,6 @@ public class AccountService {
   public AccountService() { this.accountDao = new AccountDao(); }
   public AccountService(AccountDao mockDao) { this.accountDao = mockDao; }
 
-  private ClientDao clientDao;
-
   public List<Account> getAllAccounts(String id) throws SQLException {
     int clientId = Integer.parseInt(id);
     return this.accountDao.getAllAccounts(clientId);
@@ -72,7 +70,7 @@ public class AccountService {
       }
       validateAccountInfo(a);
       a.setId(accountId);
-      Account updatedAccount = accountDao.updateAccount(accountId, clientId, a);
+      Account updatedAccount = accountDao.updateAccount(accountId, a);
       return updatedAccount;
     } catch(NumberFormatException e) {
       throw new IllegalArgumentException("id provided must be a valid int");
