@@ -6,6 +6,7 @@
   </appender>
 
   <appender name="myFileAppender" class="ch.qos.logback.core.FileAppender">
+    <file>mylogfile.log</file>
     <append>true</append>
     <encoder>
       <pattern>%d{dd MM yyy - HH:mm:ss.SSS} [%thread] %-5level %logger{40} -%msg%n</pattern>
@@ -13,6 +14,7 @@
   </appender>
 
   <root level="INFO">
-    <appender-ref ref="myConsoleAppender" />
+    <appender-ref ref="myConsoleAppender"/>
+    <appender-ref ref="myFileAppender"/>
   </root>
 </configuration>

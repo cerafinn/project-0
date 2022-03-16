@@ -25,7 +25,14 @@ INSERT INTO clients (first_name, last_name, age) VALUES
 
 INSERT INTO accounts(account_type, balance, client_id) VALUES
 ('Savings', 200, 1),
-('Checking', 150, 1);
+('Checking', 150, 1),
+('Savings', 200, 1),
+('Checking', 450, 2),
+('Checking', 200, 3),
+('Savings', 7000, 3),
+('Savings', 200, 3),
+('Checking', 4500, 3),
+('Savings', 1200, 3);
 
 SELECT * FROM clients;
 SELECT * FROM accounts;

@@ -9,7 +9,7 @@ public class Client {
   private String firstName;
   private String lastName;
   private int age;
-  private List<Account> accounts; //stackoverflow -- need to test and determine the best collection type
+  private List<Account> accounts;
 
   //added more constructors, need to have an if accounts == null argument
   public Client() {};
